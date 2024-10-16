@@ -133,7 +133,8 @@ public class CrtlEmpleado implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == vista.btnAgregar) {
+        //---------------------BOTON AGREGAR--------------------------
+    if (e.getSource() == vista.btnAgregar) {
     modelo.setNombre(vista.txtNombre.getText());
     modelo.setApellido(vista.txtApellido.getText());
     modelo.setTipoDocumento(vista.ComboTipoDocu.getSelectedItem().toString());  // ComboBox
@@ -195,7 +196,7 @@ public class CrtlEmpleado implements ActionListener {
         // Cargar empleados en la tabla
         cargarEmpleados();
     }
-
+        //---------------------BOTON MODIFICAR--------------------------
        if (e.getSource() == vista.btnModificar) {
     String idEmpleado = vista.txtId.getText();
     if (idEmpleado.isEmpty()) {
@@ -261,7 +262,7 @@ public class CrtlEmpleado implements ActionListener {
     
     cargarEmpleados(); // Refrescar la tabla
 }
-
+        //---------------------BOTON ELIMINAR--------------------------
         if (e.getSource() == vista.btnEliminar) {
             String numeroDocumento = vista.txtNumDocu.getText();  // Eliminar por numero_documento
 
@@ -274,7 +275,7 @@ public class CrtlEmpleado implements ActionListener {
             // Cargar empleados en la tabla
             cargarEmpleados();
         }
-
+        //---------------------BOTON BUSCAR--------------------------
         if (e.getSource() == vista.btnBuscar) {
             String numeroDocumento = vista.txtBuscar.getText().trim();  // Buscar por numero_documento
             if (numeroDocumento.isEmpty()) {
@@ -283,7 +284,6 @@ public class CrtlEmpleado implements ActionListener {
             }
             
             modelo.setNumDocumento(numeroDocumento);
-
             if (dao.buscar(modelo)) {
                 vista.txtId.setText(String.valueOf(modelo.getId()));
                 vista.txtNombre.setText(modelo.getNombre());
@@ -341,7 +341,7 @@ public class CrtlEmpleado implements ActionListener {
                 limpiar();
             }
         }
-
+        //---------------------BOTON LIMPIAR--------------------------
         if (e.getSource() == vista.btnLimpiar) {
             limpiar();
         }
