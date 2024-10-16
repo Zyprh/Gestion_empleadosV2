@@ -4,25 +4,13 @@
  */
 package VIEW;
 
-import javax.swing.table.DefaultTableModel;
-
-/**
- *
- * @author Alumno
- */
 public class Frame1 extends javax.swing.JFrame {
 
     /**
      * Creates new form Frame1
      */
     public Frame1() {
-        initComponents();
-        
-        // Suponiendo que tu tabla se llama "tablaEmpleados"
-    String[] columnas = {"Nombre", "Apellido", "Tipo Documento", "N° Documento", "Dirección", "Teléfono", "Correo", "Sexo", "Cargo", "Departamento", "Salario", "Estado Civil", "Fecha Nacimiento", "Fecha Ingreso", "Estado"};
-    DefaultTableModel modeloTabla = new DefaultTableModel(columnas, 0);
-    Templeados.setModel(modeloTabla);
-
+        initComponents();        
     }
 
     /**
