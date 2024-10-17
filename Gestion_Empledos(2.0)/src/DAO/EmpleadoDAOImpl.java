@@ -1,17 +1,24 @@
-package Modelo;
+package DAO;
 
+import Implement.EmpleadoDAO;
+import Modelo.conexion;
+import Modelo.Empleado;
+import java.awt.event.KeyEvent;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-public class EmpleadoDAO extends Conexion_1 {
+import javax.swing.JTextField;
+public class EmpleadoDAOImpl implements EmpleadoDAO{
+     
 
+    @Override    
     // Método para crear un empleado
     public boolean crearEmpleado(Empleado empleado) {
     String sql = "INSERT INTO empleados (nombre, apellido, tipo_documento, numero_documento, direccion, telefono, correo_electronico, sexo, cargo, departamento, salario, fecha_nacimiento, estado_civil, estado, fecha_ingreso) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     
-    try (Connection conn = Conexion_1.conectar(); PreparedStatement ps = conn.prepareStatement(sql)) {
+    try (Connection conn = conexion.conectar(); PreparedStatement ps = conn.prepareStatement(sql)) {
         ps.setString(1, empleado.getNombre());
         ps.setString(2, empleado.getApellido());
         ps.setString(3, empleado.getTipoDocumento());
@@ -34,11 +41,12 @@ public class EmpleadoDAO extends Conexion_1 {
         return false;
     }
 }
+     @Override  
     // Método para leer empleados
     public ArrayList<Empleado> listarEmpleados() {
         ArrayList<Empleado> listaEmpleados = new ArrayList<>();
         String sql = "SELECT * FROM empleados";
-        try (Connection conn = Conexion_1.conectar(); PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (Connection conn = conexion.conectar(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 Empleado empleado = new Empleado(
@@ -66,14 +74,14 @@ public class EmpleadoDAO extends Conexion_1 {
         }
         return listaEmpleados;
     }
-
-
-        public boolean actualizarEmpleado(Empleado modelo) {
+    @Override
+    // Método para actualizar empleado
+    public boolean actualizarEmpleado(Empleado modelo) {
         String sql = "UPDATE empleados SET nombre = ?, apellido = ?, tipo_documento = ?, numero_documento = ?, "
                    + "direccion = ?, telefono = ?, correo_electronico = ?, sexo = ?, cargo = ?, "
                    + "departamento = ?, salario = ?, fecha_nacimiento = ?, fecha_ingreso = ?, "
                    + "estado_civil = ?, estado = ? WHERE id = ?";
-        try (Connection conn = Conexion_1.conectar(); PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (Connection conn = conexion.conectar(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, modelo.getNombre());
             ps.setString(2, modelo.getApellido());
             ps.setString(3, modelo.getTipoDocumento());
@@ -97,13 +105,11 @@ public class EmpleadoDAO extends Conexion_1 {
         }
         return false; // Retorna false si no se realizó la actualización
     }
-
-
-
+    @Override
     // Método para eliminar empleado
     public boolean eliminarEmpleado(String numeroDocumento) {
     String sql = "DELETE FROM empleados WHERE numero_documento=?";
-    try (Connection conn = Conexion_1.conectar(); PreparedStatement ps = conn.prepareStatement(sql)) {
+    try (Connection conn = conexion.conectar(); PreparedStatement ps = conn.prepareStatement(sql)) {
         ps.setString(1, numeroDocumento); // Cambié a numero_documento en lugar de id
         return ps.executeUpdate() > 0;
     } catch (SQLException e) {
@@ -111,11 +117,11 @@ public class EmpleadoDAO extends Conexion_1 {
         return false;
     }
 }
-
-    
+    @Override
+    // Método para buscar empleado
     public boolean buscar(Empleado empleado) {
     String sql = "SELECT * FROM empleados WHERE numero_documento=?";
-    try (Connection con = Conexion_1.conectar(); PreparedStatement ps = con.prepareStatement(sql)) {
+    try (Connection con = conexion.conectar(); PreparedStatement ps = con.prepareStatement(sql)) {
         ps.setString(1, empleado.getNumDocumento());  // Buscamos por numero_documento
         System.out.println("Buscando documento: "+ empleado.getNumDocumento());
         ResultSet rs = ps.executeQuery();
@@ -150,6 +156,21 @@ public class EmpleadoDAO extends Conexion_1 {
         return false;
     }
 }
+    
+    @Override
+     public void soloNcarc(int numcarac, JTextField tf, KeyEvent e){
+        if(tf.getText().length() >= numcarac){
+            e.consume();
+        }
+        
+    }
+    @Override
+    public void soloTodosNum(KeyEvent e){
+        char c = e.getKeyChar();
+        if (c < 48 || c > 57){
+            e.consume();
+        }
+    }
 
 
 }

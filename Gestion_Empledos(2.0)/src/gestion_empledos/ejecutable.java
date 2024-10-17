@@ -3,14 +3,11 @@ package gestion_empledos;
 
 import Controlador.CrtlEmpleado;
 import Modelo.Empleado;
-import Modelo.EmpleadoDAO;
+import DAO.EmpleadoDAOImpl;
 import VIEW.Frame1;
 import javax.swing.SwingUtilities;
 
-/**
- *
- * @author Alumno
- */
+
 public class ejecutable {
 
     /**
@@ -21,7 +18,7 @@ public class ejecutable {
         SwingUtilities.invokeLater(() -> {
             // Crear modelo, DAO, y vista
             Empleado modelo = new Empleado();
-            EmpleadoDAO dao = new EmpleadoDAO();
+            EmpleadoDAOImpl dao = new EmpleadoDAOImpl();
             Frame1 vista = new Frame1();
             
             // Crear el controlador y pasarle el modelo, DAO, y vista

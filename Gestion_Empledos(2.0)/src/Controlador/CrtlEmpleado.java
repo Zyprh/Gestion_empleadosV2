@@ -1,7 +1,7 @@
 package Controlador;
 
 import Modelo.Empleado;
-import Modelo.EmpleadoDAO;
+import Implement.EmpleadoDAO;
 import VIEW.Frame1;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
@@ -198,11 +198,11 @@ public class CrtlEmpleado implements ActionListener {
     }
         //---------------------BOTON MODIFICAR--------------------------
        if (e.getSource() == vista.btnModificar) {
-    String idEmpleado = vista.txtId.getText();
-    if (idEmpleado.isEmpty()) {
-        JOptionPane.showMessageDialog(null, "El ID del empleado no puede estar vacío.");
-        return; // Detiene la ejecución
-    }
+        String idEmpleado = vista.txtId.getText();
+        if (idEmpleado.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "El ID del empleado no puede estar vacío.");
+            return; // Detiene la ejecución
+        }
 
     modelo.setId(idEmpleado);
     modelo.setNombre(vista.txtNombre.getText());
