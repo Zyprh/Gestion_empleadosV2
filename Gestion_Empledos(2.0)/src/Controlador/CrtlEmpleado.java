@@ -13,17 +13,17 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 public class CrtlEmpleado implements ActionListener {
-    
+
     private final Empleado modelo;
     private final EmpleadoDAO dao;
     private final Frame1 vista;
     private DefaultTableModel modeloTabla;
-    
+
     public CrtlEmpleado(Empleado modelo, EmpleadoDAO dao, Frame1 vista) {
         this.modelo = modelo;
         this.dao = dao;
         this.vista = vista;
-        
+
         // Carga de icono usando getResource
         ImageIcon iconAgregar = new ImageIcon(getClass().getResource("/img/agregar.png"));
         Image imgAgregar = iconAgregar.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH); // Cambia 20, 20 por el tamaño que desees
@@ -45,25 +45,24 @@ public class CrtlEmpleado implements ActionListener {
         ImageIcon iconBuscar = new ImageIcon(getClass().getResource("/img/lupa.png"));
         Image imgBuscar = iconBuscar.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
         this.vista.btnBuscar.setIcon(new ImageIcon(imgBuscar));
-        
-        
-        /*\*/
 
+        /*\*/
         // Asignamos los listeners a los botones
         this.vista.btnAgregar.addActionListener(this);
         this.vista.btnModificar.addActionListener(this);
         this.vista.btnEliminar.addActionListener(this);
         this.vista.btnLimpiar.addActionListener(this);
         this.vista.btnBuscar.addActionListener(this);
-        
+
         inicializarTabla();
         // Cargar los datos al inicializar
         cargarEmpleados();
     }
+
     private void inicializarTabla() {
-        String[] columnas = {"ID", "Nombre", "Apellido", "Tipo Documento", "N° Documento", "Dirección", 
-                             "Teléfono", "Correo", "Sexo", "Cargo", "Departamento", "Salario", 
-                             "Estado Civil", "Fecha Nacimiento", "Fecha Ingreso", "Estado"};
+        String[] columnas = {"ID", "Nombre", "Apellido", "Tipo Documento", "N° Documento", "Dirección",
+            "Teléfono", "Correo", "Sexo", "Cargo", "Departamento", "Salario",
+            "Estado Civil", "Fecha Nacimiento", "Fecha Ingreso", "Estado"};
 
         // Inicializar el modelo de la tabla
         modeloTabla = new DefaultTableModel(columnas, 0);
@@ -105,7 +104,6 @@ public class CrtlEmpleado implements ActionListener {
         }
     }
 
-
     public void iniciar() {
         vista.setTitle("Gestión de Empleados");
         vista.setLocationRelativeTo(null);
@@ -134,134 +132,134 @@ public class CrtlEmpleado implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         //---------------------BOTON AGREGAR--------------------------
-    if (e.getSource() == vista.btnAgregar) {
-    modelo.setNombre(vista.txtNombre.getText());
-    modelo.setApellido(vista.txtApellido.getText());
-    modelo.setTipoDocumento(vista.ComboTipoDocu.getSelectedItem().toString());  // ComboBox
-    modelo.setNumDocumento(vista.txtNumDocu.getText());
-    modelo.setDireccion(vista.txtDireccion.getText());
-    modelo.setTelefono(vista.txtTelefono.getText());
-    modelo.setCorreo(vista.txtCorreo.getText());
-    modelo.setSexo(vista.ComboSexo.getSelectedItem().toString()); // ComboBox
-    modelo.setCargo(vista.txtCargo.getText());
-    modelo.setDepartamento(vista.ComboDepartamento.getSelectedItem().toString()); // ComboBox
+        if (e.getSource() == vista.btnAgregar) {
+            modelo.setNombre(vista.txtNombre.getText());
+            modelo.setApellido(vista.txtApellido.getText());
+            modelo.setTipoDocumento(vista.ComboTipoDocu.getSelectedItem().toString());  // ComboBox
+            modelo.setNumDocumento(vista.txtNumDocu.getText());
+            modelo.setDireccion(vista.txtDireccion.getText());
+            modelo.setTelefono(vista.txtTelefono.getText());
+            modelo.setCorreo(vista.txtCorreo.getText());
+            modelo.setSexo(vista.ComboSexo.getSelectedItem().toString()); // ComboBox
+            modelo.setCargo(vista.txtCargo.getText());
+            modelo.setDepartamento(vista.ComboDepartamento.getSelectedItem().toString()); // ComboBox
 
-        // Obtener y establecer el salario
-        try {
-            String salarioStr = vista.txtSalario.getText(); 
-            BigDecimal salario = new BigDecimal(salarioStr); // Convertir a BigDecimal
-            modelo.setSalario(salario);
-        } catch (NumberFormatException ex) {
-            JOptionPane.showMessageDialog(null, "El salario ingresado no es válido. Por favor, ingresa un número válido.");
-            return; // Detener la ejecución si el salario no es válido
+            // Obtener y establecer el salario
+            try {
+                String salarioStr = vista.txtSalario.getText();
+                BigDecimal salario = new BigDecimal(salarioStr); // Convertir a BigDecimal
+                modelo.setSalario(salario);
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(null, "El salario ingresado no es válido. Por favor, ingresa un número válido.");
+                return; // Detener la ejecución si el salario no es válido
+            }
+
+            // Obtener fechas de los JDateChooser
+            java.util.Date fechaNacimiento = vista.dcFechaNacimiento.getDate();
+            java.util.Date fechaIngreso = vista.dcFechaIngreso.getDate();
+
+            // Verificar que las fechas no sean nulas
+            if (fechaNacimiento != null) {
+                modelo.setFechaNacimiento(new java.sql.Date(fechaNacimiento.getTime())); // Establecer fecha de nacimiento
+            } else {
+                JOptionPane.showMessageDialog(null, "Por favor selecciona una fecha de nacimiento.");
+                return; // Detener ejecución si no hay fecha
+            }
+
+            if (fechaIngreso != null) {
+                modelo.setFechaIngreso(new java.sql.Date(fechaIngreso.getTime())); // Establecer fecha de ingreso
+            } else {
+                JOptionPane.showMessageDialog(null, "Por favor selecciona una fecha de ingreso.");
+                return; // Detener ejecución si no hay fecha
+            }
+
+            // Estado Civil
+            if (vista.rbCasado.isSelected()) {
+                modelo.setEstadoCivil("Casado");
+            } else if (vista.rbSoltero.isSelected()) {
+                modelo.setEstadoCivil("Soltero");
+            }
+
+            // Estado (Activo o Inactivo)
+            modelo.setEstado(vista.chkActivo.isSelected()); // Solo una línea
+
+            // Crear empleado en la base de datos
+            if (dao.crearEmpleado(modelo)) {
+                JOptionPane.showMessageDialog(null, "Registro Guardado");
+                limpiar();
+            } else {
+                JOptionPane.showMessageDialog(null, "Error al Guardar");
+            }
+
+            // Cargar empleados en la tabla
+            cargarEmpleados();
         }
-
-        // Obtener fechas de los JDateChooser
-        java.util.Date fechaNacimiento = vista.dcFechaNacimiento.getDate();
-        java.util.Date fechaIngreso = vista.dcFechaIngreso.getDate();
-
-        // Verificar que las fechas no sean nulas
-        if (fechaNacimiento != null) {
-            modelo.setFechaNacimiento(new java.sql.Date(fechaNacimiento.getTime())); // Establecer fecha de nacimiento
-        } else {
-            JOptionPane.showMessageDialog(null, "Por favor selecciona una fecha de nacimiento.");
-            return; // Detener ejecución si no hay fecha
-        }
-
-        if (fechaIngreso != null) {
-            modelo.setFechaIngreso(new java.sql.Date(fechaIngreso.getTime())); // Establecer fecha de ingreso
-        } else {
-            JOptionPane.showMessageDialog(null, "Por favor selecciona una fecha de ingreso.");
-            return; // Detener ejecución si no hay fecha
-        }
-
-        // Estado Civil
-        if (vista.rbCasado.isSelected()) {
-            modelo.setEstadoCivil("Casado");
-        } else if (vista.rbSoltero.isSelected()) {
-            modelo.setEstadoCivil("Soltero");
-        }
-
-        // Estado (Activo o Inactivo)
-        modelo.setEstado(vista.chkActivo.isSelected()); // Solo una línea
-
-        // Crear empleado en la base de datos
-        if (dao.crearEmpleado(modelo)) {
-            JOptionPane.showMessageDialog(null, "Registro Guardado");
-            limpiar();
-        } else {
-            JOptionPane.showMessageDialog(null, "Error al Guardar");
-        }
-
-        // Cargar empleados en la tabla
-        cargarEmpleados();
-    }
         //---------------------BOTON MODIFICAR--------------------------
-       if (e.getSource() == vista.btnModificar) {
-        String idEmpleado = vista.txtId.getText();
-        if (idEmpleado.isEmpty()) {
-            JOptionPane.showMessageDialog(null, "El ID del empleado no puede estar vacío.");
-            return; // Detiene la ejecución
+        if (e.getSource() == vista.btnModificar) {
+            String idEmpleado = vista.txtId.getText();
+            if (idEmpleado.isEmpty()) {
+                JOptionPane.showMessageDialog(null, "El ID del empleado no puede estar vacío.");
+                return; // Detiene la ejecución
+            }
+
+            modelo.setId(idEmpleado);
+            modelo.setNombre(vista.txtNombre.getText());
+            modelo.setApellido(vista.txtApellido.getText());
+            modelo.setTipoDocumento(vista.ComboTipoDocu.getSelectedItem().toString());
+            modelo.setNumDocumento(vista.txtNumDocu.getText());
+            modelo.setDireccion(vista.txtDireccion.getText());
+            modelo.setTelefono(vista.txtTelefono.getText());
+            modelo.setCorreo(vista.txtCorreo.getText());
+            modelo.setSexo(vista.ComboSexo.getSelectedItem().toString());
+            modelo.setCargo(vista.txtCargo.getText());
+            modelo.setDepartamento(vista.ComboDepartamento.getSelectedItem().toString());
+
+            // Obtener y validar el salario
+            String salarioStr = vista.txtSalario.getText();
+            if (salarioStr.isEmpty()) {
+                JOptionPane.showMessageDialog(null, "El salario no puede estar vacío.");
+                return; // Detiene la ejecución
+            }
+
+            try {
+                BigDecimal salario = new BigDecimal(salarioStr);
+                modelo.setSalario(salario);
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(vista, "El salario ingresado no es válido. Por favor, ingresa un número válido.");
+                return; // Detiene la ejecución
+            }
+
+            // Establecer fechas
+            java.util.Date fechaNacimiento = vista.dcFechaNacimiento.getDate();
+            java.util.Date fechaIngreso = vista.dcFechaIngreso.getDate();
+
+            if (fechaNacimiento != null) {
+                modelo.setFechaNacimiento(new java.sql.Date(fechaNacimiento.getTime()));
+            }
+            if (fechaIngreso != null) {
+                modelo.setFechaIngreso(new java.sql.Date(fechaIngreso.getTime()));
+            }
+
+            // Establecer estado civil
+            if (vista.rbCasado.isSelected()) {
+                modelo.setEstadoCivil("Casado");
+            } else {
+                modelo.setEstadoCivil("Soltero");
+            }
+
+            // Establecer estado
+            modelo.setEstado(vista.chkActivo.isSelected());
+
+            // Actualizar el empleado en la base de datos
+            if (dao.actualizarEmpleado(modelo)) {
+                JOptionPane.showMessageDialog(null, "Registro Modificado");
+                limpiar();
+            } else {
+                JOptionPane.showMessageDialog(null, "Error al Modificar");
+            }
+
+            cargarEmpleados(); // Refrescar la tabla
         }
-
-    modelo.setId(idEmpleado);
-    modelo.setNombre(vista.txtNombre.getText());
-    modelo.setApellido(vista.txtApellido.getText());
-    modelo.setTipoDocumento(vista.ComboTipoDocu.getSelectedItem().toString());
-    modelo.setNumDocumento(vista.txtNumDocu.getText());
-    modelo.setDireccion(vista.txtDireccion.getText());
-    modelo.setTelefono(vista.txtTelefono.getText());
-    modelo.setCorreo(vista.txtCorreo.getText());
-    modelo.setSexo(vista.ComboSexo.getSelectedItem().toString());
-    modelo.setCargo(vista.txtCargo.getText());
-    modelo.setDepartamento(vista.ComboDepartamento.getSelectedItem().toString());
-
-    // Obtener y validar el salario
-    String salarioStr = vista.txtSalario.getText();
-    if (salarioStr.isEmpty()) {
-        JOptionPane.showMessageDialog(null, "El salario no puede estar vacío.");
-        return; // Detiene la ejecución
-    }
-    
-    try {
-        BigDecimal salario = new BigDecimal(salarioStr);
-        modelo.setSalario(salario);
-    } catch (NumberFormatException ex) {
-        JOptionPane.showMessageDialog(vista, "El salario ingresado no es válido. Por favor, ingresa un número válido.");
-        return; // Detiene la ejecución
-    }
-
-    // Establecer fechas
-    java.util.Date fechaNacimiento = vista.dcFechaNacimiento.getDate();
-    java.util.Date fechaIngreso = vista.dcFechaIngreso.getDate();
-
-    if (fechaNacimiento != null) {
-        modelo.setFechaNacimiento(new java.sql.Date(fechaNacimiento.getTime()));
-    }
-    if (fechaIngreso != null) {
-        modelo.setFechaIngreso(new java.sql.Date(fechaIngreso.getTime()));
-    }
-
-    // Establecer estado civil
-    if (vista.rbCasado.isSelected()) {
-        modelo.setEstadoCivil("Casado");
-    } else {
-        modelo.setEstadoCivil("Soltero");
-    }
-
-    // Establecer estado
-    modelo.setEstado(vista.chkActivo.isSelected());
-
-    // Actualizar el empleado en la base de datos
-    if (dao.actualizarEmpleado(modelo)) {
-        JOptionPane.showMessageDialog(null, "Registro Modificado");
-        limpiar();
-    } else {
-        JOptionPane.showMessageDialog(null, "Error al Modificar");
-    }
-    
-    cargarEmpleados(); // Refrescar la tabla
-}
         //---------------------BOTON ELIMINAR--------------------------
         if (e.getSource() == vista.btnEliminar) {
             String numeroDocumento = vista.txtNumDocu.getText();  // Eliminar por numero_documento
@@ -282,7 +280,7 @@ public class CrtlEmpleado implements ActionListener {
                 JOptionPane.showMessageDialog(null, "El documento no puede estar vacío.");
                 return; // Detiene la ejecución
             }
-            
+
             modelo.setNumDocumento(numeroDocumento);
             if (dao.buscar(modelo)) {
                 vista.txtId.setText(String.valueOf(modelo.getId()));
@@ -297,10 +295,10 @@ public class CrtlEmpleado implements ActionListener {
                 vista.txtCargo.setText(modelo.getCargo());
                 vista.ComboDepartamento.setSelectedItem(modelo.getDepartamento());  // Seleccionamos el valor en ComboBox
                 vista.txtSalario.setText(modelo.getSalario().toString());
-                
+
                 try {
                     // Obtener el valor del JTextField como String
-                    String salarioStr = vista.txtSalario.getText(); 
+                    String salarioStr = vista.txtSalario.getText();
 
                     // Convertir el String a BigDecimal
                     BigDecimal salario = new BigDecimal(salarioStr);
@@ -316,8 +314,6 @@ public class CrtlEmpleado implements ActionListener {
                     JOptionPane.showMessageDialog(vista, "El salario ingresado no es válido. Por favor, ingresa un número válido.");
                 }
 
-                
-                
                 // Establecer las fechas en los JDateChooser
                 if (modelo.getFechaNacimiento() != null) {
                     vista.dcFechaNacimiento.setDate(modelo.getFechaNacimiento());

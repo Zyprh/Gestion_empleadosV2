@@ -1,4 +1,3 @@
-
 package VIEW;
 
 import DAO.EmpleadoDAOImpl;
@@ -9,10 +8,11 @@ import java.awt.event.KeyEvent;
 import javax.swing.JOptionPane;
 
 public class Frame1 extends javax.swing.JFrame {
+
     private EmpleadoDAO dao = new EmpleadoDAOImpl();
-    
+
     public Frame1() {
-        initComponents();    
+        initComponents();
         setLocationRelativeTo(null);
     }
 
@@ -130,7 +130,22 @@ public class Frame1 extends javax.swing.JFrame {
             }
         });
 
+        txtTelefono.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtTelefonoKeyPressed(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtTelefonoKeyTyped(evt);
+            }
+        });
+
         jLabel17.setText("DIRECCION");
+
+        txtDireccion.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtDireccionKeyPressed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -518,57 +533,57 @@ public class Frame1 extends javax.swing.JFrame {
 
     private void TempleadosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TempleadosMouseClicked
         // Obtener la fila seleccionada
-    int filaSeleccionada = Templeados.getSelectedRow();
+        int filaSeleccionada = Templeados.getSelectedRow();
 
-    if (filaSeleccionada >= 0) {
-        // Obtener el ID del empleado (oculto)
-        String idEmpleado = Templeados.getValueAt(filaSeleccionada, 0) != null ? Templeados.getValueAt(filaSeleccionada, 0).toString() : "No ID";
-        System.out.println("ID del empleado seleccionado: " + idEmpleado); // Para depuración
+        if (filaSeleccionada >= 0) {
+            // Obtener el ID del empleado (oculto)
+            String idEmpleado = Templeados.getValueAt(filaSeleccionada, 0) != null ? Templeados.getValueAt(filaSeleccionada, 0).toString() : "No ID";
+            System.out.println("ID del empleado seleccionado: " + idEmpleado); // Para depuración
 
-        // Asignar el resto de los campos
-        txtId.setText(idEmpleado);
-        txtNombre.setText(Templeados.getValueAt(filaSeleccionada, 1) != null ? Templeados.getValueAt(filaSeleccionada, 1).toString() : "");
-        txtApellido.setText(Templeados.getValueAt(filaSeleccionada, 2) != null ? Templeados.getValueAt(filaSeleccionada, 2).toString() : "");
-        ComboTipoDocu.setSelectedItem(Templeados.getValueAt(filaSeleccionada, 3) != null ? Templeados.getValueAt(filaSeleccionada, 3).toString() : null);
-        txtNumDocu.setText(Templeados.getValueAt(filaSeleccionada, 4) != null ? Templeados.getValueAt(filaSeleccionada, 4).toString() : "");
-        txtDireccion.setText(Templeados.getValueAt(filaSeleccionada, 5) != null ? Templeados.getValueAt(filaSeleccionada, 5).toString() : "");
-        txtTelefono.setText(Templeados.getValueAt(filaSeleccionada, 6) != null ? Templeados.getValueAt(filaSeleccionada, 6).toString() : "");
-        txtCorreo.setText(Templeados.getValueAt(filaSeleccionada, 7) != null ? Templeados.getValueAt(filaSeleccionada, 7).toString() : "");
-        ComboSexo.setSelectedItem(Templeados.getValueAt(filaSeleccionada, 8) != null ? Templeados.getValueAt(filaSeleccionada, 8).toString() : null);
-        txtCargo.setText(Templeados.getValueAt(filaSeleccionada, 9) != null ? Templeados.getValueAt(filaSeleccionada, 9).toString() : "");
-        ComboDepartamento.setSelectedItem(Templeados.getValueAt(filaSeleccionada, 10) != null ? Templeados.getValueAt(filaSeleccionada, 10).toString() : null);
-        txtSalario.setText(Templeados.getValueAt(filaSeleccionada, 11) != null ? Templeados.getValueAt(filaSeleccionada, 11).toString() : "");
+            // Asignar el resto de los campos
+            txtId.setText(idEmpleado);
+            txtNombre.setText(Templeados.getValueAt(filaSeleccionada, 1) != null ? Templeados.getValueAt(filaSeleccionada, 1).toString() : "");
+            txtApellido.setText(Templeados.getValueAt(filaSeleccionada, 2) != null ? Templeados.getValueAt(filaSeleccionada, 2).toString() : "");
+            ComboTipoDocu.setSelectedItem(Templeados.getValueAt(filaSeleccionada, 3) != null ? Templeados.getValueAt(filaSeleccionada, 3).toString() : null);
+            txtNumDocu.setText(Templeados.getValueAt(filaSeleccionada, 4) != null ? Templeados.getValueAt(filaSeleccionada, 4).toString() : "");
+            txtDireccion.setText(Templeados.getValueAt(filaSeleccionada, 5) != null ? Templeados.getValueAt(filaSeleccionada, 5).toString() : "");
+            txtTelefono.setText(Templeados.getValueAt(filaSeleccionada, 6) != null ? Templeados.getValueAt(filaSeleccionada, 6).toString() : "");
+            txtCorreo.setText(Templeados.getValueAt(filaSeleccionada, 7) != null ? Templeados.getValueAt(filaSeleccionada, 7).toString() : "");
+            ComboSexo.setSelectedItem(Templeados.getValueAt(filaSeleccionada, 8) != null ? Templeados.getValueAt(filaSeleccionada, 8).toString() : null);
+            txtCargo.setText(Templeados.getValueAt(filaSeleccionada, 9) != null ? Templeados.getValueAt(filaSeleccionada, 9).toString() : "");
+            ComboDepartamento.setSelectedItem(Templeados.getValueAt(filaSeleccionada, 10) != null ? Templeados.getValueAt(filaSeleccionada, 10).toString() : null);
+            txtSalario.setText(Templeados.getValueAt(filaSeleccionada, 11) != null ? Templeados.getValueAt(filaSeleccionada, 11).toString() : "");
 
-        // Manejar las fechas (validar si no son nulas)
-        try {
-            Object fechaNacimientoObj = Templeados.getValueAt(filaSeleccionada, 12);
-            if (fechaNacimientoObj instanceof java.util.Date) {
-                dcFechaNacimiento.setDate((java.util.Date) fechaNacimientoObj);
-            } else {
-                dcFechaNacimiento.setDate(null);
+            // Manejar las fechas (validar si no son nulas)
+            try {
+                Object fechaNacimientoObj = Templeados.getValueAt(filaSeleccionada, 12);
+                if (fechaNacimientoObj instanceof java.util.Date) {
+                    dcFechaNacimiento.setDate((java.util.Date) fechaNacimientoObj);
+                } else {
+                    dcFechaNacimiento.setDate(null);
+                }
+
+                Object fechaIngresoObj = Templeados.getValueAt(filaSeleccionada, 13);
+                if (fechaIngresoObj instanceof java.util.Date) {
+                    dcFechaIngreso.setDate((java.util.Date) fechaIngresoObj);
+                } else {
+                    dcFechaIngreso.setDate(null);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
 
-            Object fechaIngresoObj = Templeados.getValueAt(filaSeleccionada, 13);
-            if (fechaIngresoObj instanceof java.util.Date) {
-                dcFechaIngreso.setDate((java.util.Date) fechaIngresoObj);
-            } else {
-                dcFechaIngreso.setDate(null);
+            // Manejar estado civil y estado
+            String estadoCivil = Templeados.getValueAt(filaSeleccionada, 14) != null ? Templeados.getValueAt(filaSeleccionada, 14).toString() : "";
+            if (estadoCivil.equals("Soltero")) {
+                rbSoltero.setSelected(true);
+            } else if (estadoCivil.equals("Casado")) {
+                rbCasado.setSelected(true);
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
 
-        // Manejar estado civil y estado
-        String estadoCivil = Templeados.getValueAt(filaSeleccionada, 14) != null ? Templeados.getValueAt(filaSeleccionada, 14).toString() : "";
-        if (estadoCivil.equals("Soltero")) {
-            rbSoltero.setSelected(true);
-        } else if (estadoCivil.equals("Casado")) {
-            rbCasado.setSelected(true);
+            boolean estado = Templeados.getValueAt(filaSeleccionada, 15) != null && Templeados.getValueAt(filaSeleccionada, 15).toString().equals("Activo");
+            chkActivo.setSelected(estado);
         }
-
-        boolean estado = Templeados.getValueAt(filaSeleccionada, 15) != null && Templeados.getValueAt(filaSeleccionada, 15).toString().equals("Activo");
-        chkActivo.setSelected(estado);
-    }
     }//GEN-LAST:event_TempleadosMouseClicked
 
     private void btnLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiarActionPerformed
@@ -578,11 +593,11 @@ public class Frame1 extends javax.swing.JFrame {
     private void txtNombreKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNombreKeyTyped
         //SOLO INGRESA LETRAS Y ESPACIOS
         char c = evt.getKeyChar();
-          // Verifica si el carácter ingresado no es una letra
-         if (!Character.isLetter(c) && c != KeyEvent.VK_SPACE) {
-             evt.consume(); // Ignora el carácter no permitido
-             
-        } 
+        // Verifica si el carácter ingresado no es una letra
+        if (!Character.isLetter(c) && c != KeyEvent.VK_SPACE) {
+            evt.consume(); // Ignora el carácter no permitido
+
+        }
     }//GEN-LAST:event_txtNombreKeyTyped
 
     private void txtNumDocuKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNumDocuKeyTyped
@@ -597,42 +612,63 @@ public class Frame1 extends javax.swing.JFrame {
         if(!numero){
             evt.consume();
         }
-        */
-                
+         */
+
         dao.soloNcarc(8, txtNumDocu, evt);
-        dao.soloTodosNum(evt);    
+        dao.soloTodosNum(evt);
     }//GEN-LAST:event_txtNumDocuKeyTyped
 
     private void txtNombreKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNombreKeyPressed
-        if(txtNombre.getText().trim().length() > 0){
-            if(evt.getKeyCode() == evt.VK_ENTER){
+        if (txtNombre.getText().trim().length() > 0) {
+            if (evt.getKeyCode() == evt.VK_ENTER) {
                 txtApellido.requestFocus();
             }
         }
     }//GEN-LAST:event_txtNombreKeyPressed
 
     private void txtApellidoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtApellidoKeyTyped
-        if(txtApellido.getText().trim().length() > 0){
-            if(evt.getKeyCode() == evt.VK_ENTER){
+        if (txtApellido.getText().trim().length() > 0) {
+            if (evt.getKeyCode() == evt.VK_ENTER) {
                 ComboTipoDocu.requestFocus();
             }
         }
     }//GEN-LAST:event_txtApellidoKeyTyped
 
     private void txtNumDocuKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNumDocuKeyPressed
-        if (txtNumDocu.getText().trim().length() >0 ){
-             if(evt.getKeyCode() == evt.VK_ENTER){
-                 txtApellido.requestFocus();
-             }
-         }  
+        if (txtNumDocu.getText().trim().length() > 0) {
+            if (evt.getKeyCode() == evt.VK_ENTER) {
+                txtDireccion.requestFocus();
+            }
+        }
     }//GEN-LAST:event_txtNumDocuKeyPressed
+
+    private void txtTelefonoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtTelefonoKeyTyped
+        dao.soloNcarc(9, txtTelefono, evt);
+        dao.soloTodosNum(evt);
+
+    }//GEN-LAST:event_txtTelefonoKeyTyped
+
+    private void txtDireccionKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtDireccionKeyPressed
+        if (txtDireccion.getText().trim().length() > 0) {
+            if (evt.getKeyCode() == evt.VK_ENTER) {
+                txtTelefono.requestFocus();
+            }
+        }
+    }//GEN-LAST:event_txtDireccionKeyPressed
+
+    private void txtTelefonoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtTelefonoKeyPressed
+        if (txtTelefono.getText().trim().length() > 0) {
+            if (evt.getKeyCode() == evt.VK_ENTER) {
+                txtCorreo.requestFocus();
+            }
+        }
+    }//GEN-LAST:event_txtTelefonoKeyPressed
 
     /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
 
-        
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
@@ -650,7 +686,6 @@ public class Frame1 extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(Frame1.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
 
-        
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new Frame1().setVisible(true);
